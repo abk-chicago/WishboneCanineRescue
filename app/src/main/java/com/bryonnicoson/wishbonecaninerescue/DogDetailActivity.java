@@ -17,6 +17,7 @@ public class DogDetailActivity extends AppCompatActivity {
     DatabaseHelper db;
     FloatingActionButton fab;
     int favorite;
+    Intent mMainIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +32,17 @@ public class DogDetailActivity extends AppCompatActivity {
         TextView mDogSize = (TextView) findViewById(R.id.dog_size);
         TextView mDogDesc = (TextView) findViewById(R.id.dog_desc);
 
-        final Intent mainIntent = getIntent();
+        final Intent fromMainIntent = getIntent();
 
-        name = mainIntent.getStringExtra("NAME");
-        breed = mainIntent.getStringExtra("BREED");
-        age = mainIntent.getStringExtra("AGE");
-        sex = mainIntent.getStringExtra("SEX");
-        size = mainIntent.getStringExtra("SIZE");
-        desc = mainIntent.getStringExtra("DESC");
-        favorite = mainIntent.getIntExtra("FAVORITE", 0);
+        name = fromMainIntent.getStringExtra("NAME");
+        breed = fromMainIntent.getStringExtra("BREED");
+        age = fromMainIntent.getStringExtra("AGE");
+        sex = fromMainIntent.getStringExtra("SEX");
+        size = fromMainIntent.getStringExtra("SIZE");
+        desc = fromMainIntent.getStringExtra("DESC");
+        favorite = fromMainIntent.getIntExtra("FAVORITE", 0);
 
-        mDogPhoto.setImageResource(mainIntent.getIntExtra("PHOTO", 0));
+        mDogPhoto.setImageResource(fromMainIntent.getIntExtra("PHOTO", 0));
         mDogName.setText(name);
         mDogBreed.setText(breed);
         mDogAge.setText(age);
@@ -50,21 +51,23 @@ public class DogDetailActivity extends AppCompatActivity {
         mDogDesc.setText(desc);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        setFabIcon();
 
-        setFabIcon(favorite);
+        mMainIntent = new Intent(DogDetailActivity.this, MainActivity.class);
+        mMainIntent.putExtra("FROM_DETAIL", true);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 db = DatabaseHelper.getInstance(DogDetailActivity.this);
                 db.toggleFavorite(name);
-                if (favorite == 0) favorite = 1;
-                if (favorite == 1) favorite = 0;
-                setFabIcon(favorite);
+                favorite = (favorite == 0) ? 1 : 0;  // sweet, got to use a ternary :)
+                setFabIcon();
+                startActivity(mMainIntent);
             }
         });
     }
-    public void setFabIcon(int favorite){
+    public void setFabIcon(){
 
         if (favorite == 0) {
             fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_off));
