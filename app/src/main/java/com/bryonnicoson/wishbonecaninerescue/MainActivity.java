@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public boolean fromDogDetailActivity;
-    
     DatabaseHelper db;
     ListView mDogList;
     Cursor mCursor;
@@ -122,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void filterIt() {
-        // BEGIN RUBEGOLDBERGIAN QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK IF SIMPLER METHOD
+
+        // BEGIN RUBEGOLDBERGIAN QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK re: simplifying
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM dog");  // simple...arf!
         boolean sexSpecified = false;

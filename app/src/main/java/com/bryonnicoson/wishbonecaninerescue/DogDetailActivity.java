@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,10 +13,10 @@ import android.widget.Toast;
 
 public class DogDetailActivity extends AppCompatActivity {
 
-    int id;
     String name, breed, age, sex, size, desc;
     DatabaseHelper db;
-    Cursor testcursor;
+    FloatingActionButton fab;
+    int favorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class DogDetailActivity extends AppCompatActivity {
         sex = mainIntent.getStringExtra("SEX");
         size = mainIntent.getStringExtra("SIZE");
         desc = mainIntent.getStringExtra("DESC");
+        favorite = mainIntent.getIntExtra("FAVORITE", 0);
 
         mDogPhoto.setImageResource(mainIntent.getIntExtra("PHOTO", 0));
         mDogName.setText(name);
@@ -47,16 +49,27 @@ public class DogDetailActivity extends AppCompatActivity {
         mDogSize.setText(size);
         mDogDesc.setText(desc);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        setFabIcon(favorite);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 db = DatabaseHelper.getInstance(DogDetailActivity.this);
                 db.toggleFavorite(name);
-
+                if (favorite == 0) favorite = 1;
+                if (favorite == 1) favorite = 0;
+                setFabIcon(favorite);
             }
         });
     }
+    public void setFabIcon(int favorite){
 
+        if (favorite == 0) {
+            fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_off));
+        } else {
+            fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.btn_star_big_on));
+        }
+    }
 }
