@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Wishbone Canine Rescue</string>
+    <string name="transition_dog_photo">Dog Photo</string>
+    <string name="transition_dog_name">Dog Name</string>
+    <string name="transition_dog_size">Dog Size</string>
+    <string name="transition_dog_age">Dog Age</string>
+    <string name="transition_dog_sex">Dog Sex</string>
+    <string name="transition_dog_breed">Dog Breed</string>
+    <string name="search_hint">enter search string</string>
+    <string name="title_activity_dog_search"></string>
+
+    <string name="radio_f">Female</string>
+    <string name="radio_m">Male</string>
+    <string name="radio_fm">Either</string>
+
+    <string name="checkbox_baby">Baby</string>
+    <string name="checkbox_young">Young</string>
+    <string name="checkbox_adult">Adult</string>
+    <string name="checkbox_senior">Senior</string>
+
+    <string name="checkbox_small">Small</string>
+    <string name="checkbox_medium">Medium</string>
+    <string name="checkbox_large">Large</string>
+
+    <string name="checkbox_female">Female</string>
+    <string name="checkbox_male">Male</string>
+
+    <string-array name="spinner_breed">
+        <item>"-- Any Breed --"</item>
+        <item>"Akita"</item>
+        <item>"American Bulldog"</item>
+        <item>"Anatolian Shepherd"</item>
+        <item>"Australian Cattle Dog"</item>
+        <item>"Australian Cattle Dog"</item>
+        <item>"Australian Shepherd"</item>
+        <item>"Basset Hound"</item>
+        <item>"Beagle"</item>
+        <item>"Bichon Frise"</item>
+        <item>"Border Collie"</item>
+        <item>"Boston Terrier"</item>
+        <item>"Boxer"</item>
+        <item>"Cairn Terrier"</item>
+        <item>"Catahoula Leopard Dog"</item>
+        <item>"Chihuahua"</item>
+        <item>"Chinese Crested"</item>
+        <item>"Corgi"</item>
+        <item>"Dachshund"</item>
+        <item>"Feist"</item>
+        <item>"German Shepherd"</item>
+        <item>"Hound"</item>
+        <item>"Italian Greyhound"</item>
+        <item>"Jack Russell Terrier"</item>
+        <item>"Labrador Retriever"</item>
+        <item>"Lhasa Apso"</item>
+        <item>"Miniature Pinscher"</item>
+        <item>"Pit Bull Terrier"</item>
+        <item>"Poodle"</item>
+        <item>"Pug"</item>
+        <item>"Rat Terrier"</item>
+        <item>"Schnauzer"</item>
+        <item>"Shepherd"</item>
+        <item>"Shih Tzu"</item>
+        <item>"Siberian Husky"</item>
+        <item>"Silky Terrier"</item>
+        <item>"Vizsla"</item>
+        <item>"Wheaten Terrier"</item>
+        <item>"Yorkshire Terrier"</item>
+    </string-array>
+
+    <string name="action_settings">Settings</string>
+</resources>
+
