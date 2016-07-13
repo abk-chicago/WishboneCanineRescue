@@ -127,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,                           // selection args
                 null,                           // group by
                 null,                           // having
-                null,                           // order by
+                DOG_FAVORITE+" DESC",           // order by
                 null);                          // limit
         return cursor;
     }

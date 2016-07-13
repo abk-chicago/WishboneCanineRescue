@@ -23,13 +23,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public boolean fromDogDetailActivity;
+    
     DatabaseHelper db;
     ListView mDogList;
     Cursor mCursor;
     DogCursorAdapter mAdapter;
     AdapterView.OnItemClickListener mDogClickListener;
     Intent mDetailIntent;
-    StringBuilder query = new StringBuilder();
 
     private CheckBox checkBoxSmall, checkBoxMedium, checkBoxLarge;
     private RadioButton radioF, radioM, radioFM;
@@ -115,70 +116,71 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // BEGIN RUBEGOLDBERGIAN QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK IF SIMPLER METHOD
-
-                query.append("SELECT * FROM dog");  // simple...arf!
-                boolean sexSpecified = false;
-
-                // DOG_SEX from RadioGroup
-                switch (selectedRadio.getId()) {
-                    case R.id.radio_f:
-                        query.append(" WHERE sex = 'Female'");
-                        sexSpecified = true;
-                        break;
-                    case R.id.radio_m:
-                        query.append(" WHERE sex = 'Male'");
-                        sexSpecified = true;
-                        break;
-                    default:
-                        break;
-                }
-
-                // DOG_SIZE from Checkbox
-                ArrayList<String> checked = new ArrayList<>();
-
-                if (checkBoxSmall.isChecked()) checked.add("Small");
-                if (checkBoxMedium.isChecked()) checked.add("Medium");
-                if (checkBoxLarge.isChecked()) checked.add("Large");
-
-                if (checked.size() < 3) {  // if we have to specify an argument, prepare our syntax
-                    if (sexSpecified) {
-                        query.append(" AND "); // if we specified a sex, this is a second condition
-                        if (checked.size() > 1){
-                            query.append(" (");
-                        }
-                    } else {
-                        query.append(" WHERE ");    // if we didn't, this is the first condition
-                    }
-
-                    switch (checked.size()) {
-                        case 0:
-                            query.append("(size = 'Small' OR size = 'Medium' OR size = 'Large')");
-                            break;
-                        case 1:
-                            query.append("size = \"" + checked.get(0) + "\"");
-                            break;
-                        case 2:
-                            query.append("size = \"" + checked.get(0) + "\" OR size = \"" + checked.get(1) + "\"");
-                            if(sexSpecified) query.append(")");
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                query.append(";");
-                //Toast.makeText(MainActivity.this, query.toString(), Toast.LENGTH_LONG).show();
-
-                mCursor = db.filterList(query.toString(), null);
-                mAdapter = new DogCursorAdapter(MainActivity.this, mCursor, 0);
-                mDogList.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-
+                filterIt();
             }
         });
     }
 
+    public void filterIt() {
+        // BEGIN RUBEGOLDBERGIAN QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK IF SIMPLER METHOD
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT * FROM dog");  // simple...arf!
+        boolean sexSpecified = false;
+
+        // DOG_SEX from RadioGroup
+        switch (selectedRadio.getId()) {
+            case R.id.radio_f:
+                query.append(" WHERE sex = 'Female'");
+                sexSpecified = true;
+                break;
+            case R.id.radio_m:
+                query.append(" WHERE sex = 'Male'");
+                sexSpecified = true;
+                break;
+            default:
+                break;
+        }
+
+        // DOG_SIZE from Checkbox
+        ArrayList<String> checked = new ArrayList<>();
+
+        if (checkBoxSmall.isChecked()) checked.add("Small");
+        if (checkBoxMedium.isChecked()) checked.add("Medium");
+        if (checkBoxLarge.isChecked()) checked.add("Large");
+
+        if (checked.size() < 3) {  // if we have to specify an argument, prepare our syntax
+            if (sexSpecified) {
+                query.append(" AND "); // if we specified a sex, this is a second condition
+                if (checked.size() > 1){
+                    query.append(" (");
+                }
+            } else {
+                query.append(" WHERE ");    // if we didn't, this is the first condition
+            }
+
+            switch (checked.size()) {
+                case 0:
+                    query.append("(size = 'Small' OR size = 'Medium' OR size = 'Large')");
+                    break;
+                case 1:
+                    query.append("size = \"" + checked.get(0) + "\"");
+                    break;
+                case 2:
+                    query.append("size = \"" + checked.get(0) + "\" OR size = \"" + checked.get(1) + "\"");
+                    if(sexSpecified) query.append(")");
+                    break;
+                default:
+                    break;
+            }
+        }
+        query.append(" ORDER BY favorite DESC;");
+        // Toast.makeText(MainActivity.this, query.toString(), Toast.LENGTH_LONG).show();
+
+        mCursor = db.filterList(query.toString(), null);
+        mAdapter = new DogCursorAdapter(MainActivity.this, mCursor, 0);
+        mDogList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -203,11 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRadioButtonClicked(View view) {
         selectedRadio = view;
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
+        filterIt();
     }
 
     public void seedDb() {
