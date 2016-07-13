@@ -7,11 +7,11 @@ import java.io.Serializable;
  */
 public class Dog implements Serializable {
 
-    private int id, mix, hasShots, altered, housetrained, specialNeeds, noDogs, noCats;
+    private int id, mix, hasShots, altered, housetrained, specialNeeds, noDogs, noCats, favorite;
     private String name, breed, sex, age, size, desc;
 
     Dog(int id, String name, String breed, String sex, String age, String size, String desc,
-        int mix, int hasShots, int altered, int housetrained, int specialNeeds, int noDogs, int noCats) {
+        int mix, int hasShots, int altered, int housetrained, int specialNeeds, int noDogs, int noCats, int favorite) {
 
         this.id = id;
         this.mix = mix;
@@ -27,6 +27,7 @@ public class Dog implements Serializable {
         this.age = age;
         this.size = size;
         this.desc = desc;
+        this.favorite = favorite;
     }
 
     // simple Dog constructor with essentials for cursor, listview, detailview
@@ -38,6 +39,14 @@ public class Dog implements Serializable {
         this.age = age;
         this.size = size;
         this.desc = desc;
+    }
+
+    public int getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
     }
 
     public int getMix() {

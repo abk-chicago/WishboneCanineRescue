@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     DogCursorAdapter mAdapter;
     AdapterView.OnItemClickListener mDogClickListener;
     Intent mDetailIntent;
+    StringBuilder query = new StringBuilder();
 
     private CheckBox checkBoxSmall, checkBoxMedium, checkBoxLarge;
     private RadioButton radioF, radioM, radioFM;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 View sexView = view.findViewById(R.id.dog_sex);
                 View ageView = view.findViewById(R.id.dog_age);
                 View sizeView = view.findViewById(R.id.dog_size);
+                View favoriteView = view.findViewById(R.id.favorite);
 
                 String name = mCursor.getString(mCursor.getColumnIndexOrThrow("name"));
                 String breed = mCursor.getString(mCursor.getColumnIndexOrThrow("breed"));
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 String age = mCursor.getString(mCursor.getColumnIndexOrThrow("age"));
                 String sex = mCursor.getString(mCursor.getColumnIndexOrThrow("sex"));
                 String desc = mCursor.getString(mCursor.getColumnIndexOrThrow("desc"));
+                int favorite = mCursor.getInt(mCursor.getColumnIndexOrThrow("favorite"));
 
                 String uri = "@drawable/" + name.toLowerCase();
                 int imageResource = getResources().getIdentifier(uri, null, getPackageName());
@@ -93,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 mDetailIntent.putExtra("SIZE", size);
                 mDetailIntent.putExtra("SEX", sex);
                 mDetailIntent.putExtra("DESC", desc);
+                mDetailIntent.putExtra("FAVORITE", favorite);
 
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this,
                         Pair.create(photoView, getString(R.string.transition_dog_photo)),
@@ -112,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // BEGIN RUBEGOLDBERGIAN QUERY BUILDER
+                // BEGIN RUBEGOLDBERGIAN QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK IF SIMPLER METHOD
 
-                StringBuilder query = new StringBuilder("SELECT * FROM dog");  // simple...arf!
+                query.append("SELECT * FROM dog");  // simple...arf!
                 boolean sexSpecified = false;
 
                 // DOG_SEX from RadioGroup
@@ -199,6 +203,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRadioButtonClicked(View view) {
         selectedRadio = view;
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
     }
 
     public void seedDb() {

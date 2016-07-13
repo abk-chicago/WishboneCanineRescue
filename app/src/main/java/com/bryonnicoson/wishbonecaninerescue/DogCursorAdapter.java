@@ -50,5 +50,15 @@ public class DogCursorAdapter extends CursorAdapter {
         // dog_size
         TextView dogSize = (TextView) view.findViewById(R.id.dog_size);
         dogSize.setText(cursor.getString(cursor.getColumnIndexOrThrow("size")));
+
+        // favorite
+        ImageView favorite = (ImageView) view.findViewById(R.id.favorite);
+        int fav = cursor.getInt(cursor.getColumnIndexOrThrow("favorite"));
+
+        if(fav == 1) {
+            favorite.setImageResource(android.R.drawable.btn_star_big_on);
+        } else {
+            favorite.setImageResource(android.R.drawable.btn_star_big_off);
+        }
     }
 }

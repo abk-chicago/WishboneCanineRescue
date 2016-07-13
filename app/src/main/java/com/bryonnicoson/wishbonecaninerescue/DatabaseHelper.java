@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by bryon on 7/10/16.
@@ -27,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper sInstance;
     private static final String TAG = "DatabaseHelper";
     private static final String DATABASE_NAME = "wbcr.db";
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 17;
 
     // Dog Table
     private static final String DOG_TABLE = "dog";
@@ -45,14 +46,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DOG_SPECIALNEEDS = "specialNeeds";
     private static final String DOG_NOCATS = "noCats";
     private static final String DOG_NODOGS = "noDogs";
+    private static final String DOG_FAVORITE = "favorite";
 
     private static final String[] DOG_KEYS = new String[]{DOG_ID, DOG_NAME, DOG_BREED, DOG_SEX, DOG_AGE, DOG_SIZE,
-            DOG_DESC, DOG_MIX, DOG_HASSHOTS, DOG_ALTERED, DOG_HOUSETRAINED, DOG_SPECIALNEEDS, DOG_NOCATS, DOG_NODOGS};
+            DOG_DESC, DOG_MIX, DOG_HASSHOTS, DOG_ALTERED, DOG_HOUSETRAINED, DOG_SPECIALNEEDS, DOG_NOCATS, DOG_NODOGS, DOG_FAVORITE};
 
     private static final String CREATE_DOG_TABLE = "CREATE TABLE " + DOG_TABLE + " (" + DOG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DOG_NAME + " TEXT," +
             DOG_BREED + " TEXT," + DOG_SEX + " TEXT," + DOG_SIZE + " TEXT," + DOG_AGE + " TEXT," + DOG_DESC + " TEXT," + DOG_MIX + " INTEGER," +
             DOG_HASSHOTS + " INTEGER," + DOG_ALTERED + " INTEGER," + DOG_HOUSETRAINED + " INTEGER," + DOG_SPECIALNEEDS + " INTEGER," +
-            DOG_NOCATS + " INTEGER," + DOG_NODOGS + " INTEGER" + ");";
+            DOG_NOCATS + " INTEGER," + DOG_NODOGS + " INTEGER," + DOG_FAVORITE + " INTEGER" + ");";
 
     private static final String DROP_DOG_TABLE = "DROP TABLE IF EXISTS " + DOG_TABLE + ";";
 
@@ -90,6 +92,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertDog(String name, String breed, String sex, String size, String age, String desc,
                           int mix, int hasShots, int altered, int housetrained, int specialNeeds, int noDogs, int noCats) {
 
+        int favorite = 0; // set all favorite flags to 0
+
         ContentValues dogV = new ContentValues();
         // dogV.put(DOG_ID, id);                       // autoincrement
         dogV.put(DOG_NAME, name);
@@ -105,6 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         dogV.put(DOG_SPECIALNEEDS, specialNeeds);
         dogV.put(DOG_NODOGS, noDogs);
         dogV.put(DOG_NOCATS, noCats);
+        dogV.put(DOG_FAVORITE, favorite);
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -131,5 +136,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, args);
         return cursor;
+    }
+
+    public void toggleFavorite(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = DOG_NAME + " = ?";
+        String[] selectionArgs = {name};
+
+        Cursor cursor = db.query(DOG_TABLE,
+                DOG_KEYS,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int favorite = cursor.getInt(cursor.getColumnIndexOrThrow(DOG_FAVORITE));
+            if (favorite == 0) {
+                setFavorite(name);
+            } else {
+                removeFavorite(name);
+            }
+        }
+    }
+
+    public void setFavorite(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DOG_FAVORITE, 1);
+
+        String selection = DOG_NAME + " = ?";
+        String[] selectionArgs = {name};
+
+        db.update(DOG_TABLE,
+                values,
+                selection,
+                selectionArgs
+                );
+    }
+
+    public void removeFavorite(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DOG_FAVORITE, 0);
+
+        String selection = DOG_NAME + " = ?";
+        String[] selectionArgs = {name};
+
+        db.update(DOG_TABLE,
+                values,
+                selection,
+                selectionArgs
+        );
     }
 }

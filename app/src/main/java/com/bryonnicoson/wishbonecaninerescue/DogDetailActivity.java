@@ -1,17 +1,21 @@
 package com.bryonnicoson.wishbonecaninerescue;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DogDetailActivity extends AppCompatActivity {
 
     int id;
     String name, breed, age, sex, size, desc;
+    DatabaseHelper db;
+    Cursor testcursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +52,11 @@ public class DogDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // add this Dog to DogHouse
-                DogHouse doghouse = DogHouse.getInstance();
-                doghouse.add(new Dog(0, name, breed, sex, age, size, desc));
+                db = DatabaseHelper.getInstance(DogDetailActivity.this);
+                db.toggleFavorite(name);
 
             }
         });
     }
+
 }
