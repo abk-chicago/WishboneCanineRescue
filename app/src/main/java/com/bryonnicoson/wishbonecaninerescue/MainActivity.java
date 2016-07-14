@@ -123,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void filterIt() {
 
-        // BEGIN RUBEGOLDBERGIAN QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK re: simplifying
+        // BEGIN RUBE-GOLDBERG-STYLE QUERY BUILDER  *** PLEASE PROVIDE FEEDBACK re: same simpler
+        // TODO: write query constructor using selection, selectionArgs .query() syntax
+
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM dog");  // simple...arf!
         boolean sexSpecified = false;
@@ -149,14 +151,14 @@ public class MainActivity extends AppCompatActivity {
         if (checkBoxMedium.isChecked()) checked.add("Medium");
         if (checkBoxLarge.isChecked()) checked.add("Large");
 
-        if (checked.size() < 3) {  // if we have to specify an argument, prepare our syntax
+        if (checked.size() < 3) {           // if we have to specify an argument, prepare our syntax
             if (sexSpecified) {
-                query.append(" AND "); // if we specified a sex, this is a second condition
+                query.append(" AND ");          // if we specified a sex, this is a second condition
                 if (checked.size() > 1){
-                    query.append(" (");
+                    query.append(" (");         // if more than one size, need enclosing parentheses
                 }
             } else {
-                query.append(" WHERE ");    // if we didn't, this is the first condition
+                query.append(" WHERE ");        // if we didn't, this is the first condition
             }
 
             switch (checked.size()) {
