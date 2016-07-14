@@ -1,10 +1,14 @@
 package com.bryonnicoson.wishbonecaninerescue;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,7 +58,6 @@ public class DogDetailActivity extends AppCompatActivity {
         setFabIcon();
 
         mMainIntent = new Intent(DogDetailActivity.this, MainActivity.class);
-        mMainIntent.putExtra("FROM_DETAIL", true);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +67,7 @@ public class DogDetailActivity extends AppCompatActivity {
                 favorite = (favorite == 0) ? 1 : 0;  // sweet, got to use a ternary :)
                 setFabIcon();
                 startActivity(mMainIntent);
+                // DogDetailActivity.this.overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
             }
         });
     }
