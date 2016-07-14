@@ -5,12 +5,14 @@ Wishbone Canine Rescue - ADI Project 3
 
 A course project to display, filter, and favorite sqlite data in a "shopping cart"-style format.
 
-![screenshot](screenshot_1.png?raw=true "screenshot")
+# ![screenshot](screenshot_1.png?raw=true "screenshot")
 
-![screenshot](screenshot_2.png?raw=true "screenshot")
+<img src="screenshot_1.png" alt="screenshot" width="50">
 
-![screenshot](screenshot_3.png?raw=true "screenshot")
+# ![screenshot](screenshot_2.png?raw=true "screenshot")
 
-![screenshot](screenshot_4.png?raw=true "screenshot")
+# ![screenshot](screenshot_3.png?raw=true "screenshot")
 
-![screenshot](screenshot_5.png?raw=true "screenshot")
+# ![screenshot](screenshot_4.png?raw=true "screenshot")
+
+# ![screenshot](screenshot_5.png?raw=true "screenshot")
